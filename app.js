@@ -33,17 +33,30 @@ const limiter = rateLimiter({
     }
 });
 
+
+
 app.use("/api/", limiter);
 
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
+
+
+// ---------------- DEFAULT ROUTES ----------------
+
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "API is running 🚀"
+  });
+});
+
+
 
 // ---------------- API ROUTES ----------------
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/admin", adminRoutes);
 
-// ---------------- FRONTEND (ADD THIS) ----------------
 
 
 // ---------------- ERROR HANDLERS ----------------
