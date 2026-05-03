@@ -8,8 +8,6 @@ const helmet = require("helmet");
 const cors = require("cors");
 const rateLimiter = require("express-rate-limit");
 
-const path = require("path"); // ✅ ADD THIS
-
 const app = express();
 
 // Security headers
@@ -46,11 +44,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/admin", adminRoutes);
 
 // ---------------- FRONTEND (ADD THIS) ----------------
-app.use(express.static(path.join(__dirname, "../client/dist")));
 
-app.get(/.*/, (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
-});
 
 // ---------------- ERROR HANDLERS ----------------
 app.use(notFound);
