@@ -13,10 +13,12 @@ const sendEmail = async (options) => {
   });
 
   try {
-    const accessToken = await oauth2Client.getAccessToken();.
+
+    const { token } = await oauth2Client.getAccessToken();
+
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 443, 
+      port: 443, // Web-safe port
       secure: true,
       auth: {
         type: "OAuth2",
@@ -24,7 +26,7 @@ const sendEmail = async (options) => {
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-        accessToken: accessToken.token,
+        accessToken: token, 
       },
     });
 
@@ -35,6 +37,7 @@ const sendEmail = async (options) => {
       html: options.html,
     };
 
+    console.log("Attempting to send email via Port 443...");
     const result = await transporter.sendMail(mailOptions);
     return result;
   } catch (error) {
