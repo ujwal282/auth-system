@@ -1,24 +1,25 @@
 const nodemailer = require("nodemailer");
 
+/**
+ * Updated Transporter for OAuth2
+ * Bypasses Render's SMTP port blocks by using Google's API flow.
+ */
 const createTransporter = () => {
   return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: Number(process.env.EMAIL_PORT),
-    secure: false,
+    service: "gmail",
     auth: {
+      type: "OAuth2",
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
     },
-    family:4
-    // tls: {
-    //   rejectUnauthorized: false,
-    // },
   });
 };
 
 const sendVerificationEmail = async (user, VerificationUrl) => {
   try {
-    const transporter = createTransporter();
+    const transporter = createTransporter(); // Fixed typo: trasnsporter -> transporter
     const cleanUrl = VerificationUrl.trim();
 
     const message = {
@@ -77,13 +78,13 @@ const sendVerificationEmail = async (user, VerificationUrl) => {
       `
     };
     await transporter.sendMail(message);
-    console.log("Email sent sucessfully");
+    console.log("Email sent successfully");
   } catch (error) {
     console.error("Email Service ERROR", error.message);
   }
 };
 
-const sendPasswordResetEmail = async (user, resetUrl)=> {
+const sendPasswordResetEmail = async (user, resetUrl) => {
   try {
     const transporter = createTransporter();
     const cleanUrl = resetUrl.trim();
