@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  */
 const sendEmail = async (to, subject, html) => {
   return await resend.emails.send({
-    from: "SecureAuth <onboarding@resend.dev>",
+    from: "SecureAuth <noreply@paudelujwal.com.np>",
     to,
     subject,
     html,
