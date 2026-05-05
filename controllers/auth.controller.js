@@ -102,6 +102,7 @@ const register = async (req, res, next) => {
         message: "Check your email",
       });
     } catch (error) {
+      console.error(error);
       // Clear token fields if email fails
       user.emailVerificationToken = undefined;
       user.emailVerificationExpire = undefined;
