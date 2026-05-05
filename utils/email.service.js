@@ -18,7 +18,7 @@ const createTransporter = () => {
 
 const sendVerificationEmail = async (user, VerificationUrl) => {
   try {
-    const trasnsporter = createTransporter();
+    const transporter = createTransporter();
     const cleanUrl = VerificationUrl.trim();
 
     const message = {
@@ -76,7 +76,7 @@ const sendVerificationEmail = async (user, VerificationUrl) => {
         </html>
       `
     };
-    await trasnsporter.sendMail(message);
+    await transporter.sendMail(message);
     console.log("Email sent sucessfully");
   } catch (error) {
     console.error("Email Service ERROR", error.message);
