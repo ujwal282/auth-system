@@ -13,20 +13,18 @@ const sendEmail = async (options) => {
   });
 
   try {
-
+    // Manually fetch the access token
     const { token } = await oauth2Client.getAccessToken();
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 443, // Web-safe port
-      secure: true,
+      service: "gmail",
       auth: {
         type: "OAuth2",
         user: process.env.EMAIL_USER,
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-        accessToken: token, 
+        accessToken: token,
       },
     });
 
@@ -37,7 +35,7 @@ const sendEmail = async (options) => {
       html: options.html,
     };
 
-    console.log("Attempting to send email via Port 443...");
+    console.log("System: Sending email via OAuth2 API flow...");
     const result = await transporter.sendMail(mailOptions);
     return result;
   } catch (error) {
@@ -50,7 +48,7 @@ const sendVerificationEmail = async (user, url) => {
   await sendEmail({
     email: user.email,
     subject: "Verify Email",
-    html: `<p>Click <a href="${url}">here</a> to verify.</p>`,
+    html: `<p>Click <a href="${url}">here</a> to verify your account.</p>`,
   });
 };
 
@@ -58,7 +56,7 @@ const sendPasswordResetEmail = async (user, url) => {
   await sendEmail({
     email: user.email,
     subject: "Reset Password",
-    html: `<p>Click <a href="${url}">here</a> to reset password.</p>`,
+    html: `<p>Click <a href="${url}">here</a> to reset your password.</p>`,
   });
 };
 
